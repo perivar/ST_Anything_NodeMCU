@@ -89,18 +89,30 @@ void EX_RCSwitch::writeStateToPin()
 		Serial.println();
 	}
 
-	// for some reason I have always enable transmit for this to work!
+	// Note! For some reason I have always enable transmit for this to work!
 	m_myRCSwitch.enableTransmit(m_nPin);
 
 	if (m_bCurrentState)
 	{
-		//m_myRCSwitch.send(m_onCode, m_onLength);
-		m_myRCSwitch.send(m_onBitString);
+		if (strlen(m_onBitString) > 0)
+		{
+			m_myRCSwitch.send(m_onBitString);
+		}
+		else
+		{
+			m_myRCSwitch.send(m_onCode, m_onLength);
+		}
 	}
 	else
 	{
-		//m_myRCSwitch.send(m_offCode, m_offLength);
-		m_myRCSwitch.send(m_offBitString);
+		if (strlen(m_offBitString) > 0)
+		{
+			m_myRCSwitch.send(m_offBitString);
+		}
+		else
+		{
+			m_myRCSwitch.send(m_offCode, m_offLength);
+		}
 	}
 }
 
