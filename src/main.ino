@@ -77,7 +77,11 @@
 #define D5 14
 #define D6 12
 #define D7 13
-#define D8 15 //must not be pulled high during power on/reset
+#define D8 15  //must not be pulled high during power on/reset
+#define D9 3   // RX0 (Serial console)
+#define D10 1  // TX0 (Serial console)
+#define D11 9  // SD2
+#define D13 10 // SD3
 
 //******************************************************************************************
 //Define which Arduino Pins will be used for each device
@@ -95,7 +99,7 @@
 #define PIN_TEMPERATUREHUMIDITY D7 //SmartThings Capabilty "Temperature and Humidity Measurement" (DHT11 and DHT22)
 #define PIN_TIMEDRELAY_1 D8        //SmartThings Capability "Relay Switch"
 
-#define PIN_RCSWITCH 3 // 3 = RX on nodemcu
+#define PIN_RCSWITCH D9 // 3 = D9/RX on nodemcu, 1 = D10/TX on nodmcu
 
 //******************************************************************************************
 //ESP8266 WiFi Information
