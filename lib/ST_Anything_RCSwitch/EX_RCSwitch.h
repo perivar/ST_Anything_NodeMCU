@@ -6,10 +6,14 @@
 //			  It inherits from the st::Executor class.
 //
 //			  Create an instance of this class in your sketch's global variable section
-//			  For Example:  st::EX_RCSwitch executor1("switch1", PIN_RCSWITCH, 35754004, 26, 18976788, 26, 174, 1, 15, LOW);
+//			  For Example:
+//                st::EX_RCSwitch executor1(F("switch1"), PIN_RCSWITCH, 35754004, 26, 18976788, 26, 174, 1, 15, LOW);
+//            or
+//			      st::EX_RCSwitch executor2(F("switch2"), PIN_RCSWITCH, "0000011010100110100101100110010110101010100110101010", "0000011010100110100101100110010110101010100101010101", 9, 4, LOW);
 //
-//			  st::EX_RCSwitch() constructor requires the following arguments
-//				- String &name - REQUIRED - the name of the object - must match the Groovy ST_Anything DeviceType tile name
+//			  st::EX_RCSwitch() have two constructors.
+//			  The first (and original) requires the following arguments:
+//				- String &name - REQUIRED - the name of the object - must match the Groovy ST_Anything DeviceType tile name  (e.g. switch3)
 //				- byte transmitterPin - REQUIRED - the Arduino Pin to be used as a digital output for the RCSwitch object's transmitter pin
 //				- unsigned long onCode - REQUIRED - the "on" code for RCSwitch send() command
 //				- unsigned int onLength - REQUIRED - the "on" code's length for RCSwitch send() command
@@ -20,6 +24,15 @@
 //				- byte repeatTransmits - OPTIONAL - defaults to "15" - the number of repeated transmits for RCSwitch send() command
 //				- bool startingState - OPTIONAL - the value desired for the initial state of the switch.  LOW = "off", HIGH = "on"
 //
+//			  The second supports Bit Strings (and therefore more devices) and requires the following arguments:
+//              Requires the new RCSwitch library: https://github.com/perivar/rc-switch
+//				- String &name - REQUIRED - the name of the object - must match the Groovy ST_Anything DeviceType tile name  (e.g. switch3)
+//				- byte transmitterPin - REQUIRED - the Arduino Pin to be used as a digital output for the RCSwitch object's transmitter pin
+//				- const char *onBitString - REQUIRED - the "on" bitstring for RCSwitch send() command
+//				- const char *offBitString - REQUIRED - the "off" bitstring for RCSwitch send() command
+//				- byte protocol - OPTIONAL - defaults to "1" - the protocol for RCSwitch send() command
+//				- byte repeatTransmits - OPTIONAL - defaults to "15" - the number of repeated transmits for RCSwitch send() command
+//				- bool startingState - OPTIONAL - the value desired for the initial state of the switch.  LOW = "off", HIGH = "on"
 //  Change History:
 //
 //    Date        Who            What
@@ -27,6 +40,7 @@
 //    2015-01-26  Dan Ogorchock  Original Creation
 //    2015-05-20  Dan Ogorchock  Improved to work with Etekcity ZAP 3F 433Mhz RF Outlets
 //    2018-08-30  Dan Ogorchock  Modified comment section above to comply with new Parent/Child Device Handler requirements
+//	  2018-02-04  P.I. Nerseth	 Changed it to work with Bit Strings and a new RCSwitch library (and thus support more devices)
 //
 //******************************************************************************************
 #ifndef ST_EX_RCSWITCH
@@ -40,23 +54,25 @@ namespace st
 class EX_RCSwitch : public Executor
 {
   private:
-	bool m_bCurrentState;	 //HIGH or LOW
-	byte m_nPin;			  //Arduino Pin used as a RC Transmitter
-	RCSwitch m_myRCSwitch;	//RCSwitch Object
-	unsigned long m_onCode;   //RCSwitch On Code
-	unsigned int m_onLength;  //RCSwitch On Length
-	unsigned long m_offCode;  //RCSwitch Off Code
-	unsigned int m_offLength; //RCSwitch Off Length
-	String m_onBitString;
-	String m_offBitString;
+	bool m_bCurrentState;		//HIGH or LOW
+	byte m_nPin;				//Arduino Pin used as a RC Transmitter
+	RCSwitch m_myRCSwitch;		//RCSwitch Object
+	int m_nProtocol;			//RCSwitch Protocol Number
+	int m_nRepeatTransmit;		//RCSwitch Number of Repeats when sending a signal
+	const char *m_onBitString;  //RCSwitch On Bit String
+	const char *m_offBitString; //RCSwitch Off Bit String
+	unsigned long m_onCode;		//RCSwitch On Code (if not using bit string)
+	unsigned int m_onLength;	//RCSwitch On Length (if not using bit string)
+	unsigned long m_offCode;	//RCSwitch Off Code (if not using bit string)
+	unsigned int m_offLength;   //RCSwitch Off Length (if not using bit string)
 
 	void writeStateToPin(); //function to update the Arduino digital output pin via RCSwitch switchOn and switchOff commands
 
   public:
 	//constructor - called in your sketch's global variable declaration section
-	EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, String onBitString, String offBitString, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
-	//EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, unsigned long onCode, unsigned int onLength, unsigned long offCode, unsigned int offLength, unsigned int pulseLength, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
-	//EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, char *onBitString, char *offBitString, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
+	EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, unsigned long onCode, unsigned int onLength, unsigned long offCode, unsigned int offLength, unsigned int pulseLength, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
+	// new constructor that supports bit strings (with the new RCSwitch library: https://github.com/perivar/rc-switch)
+	EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, const char *onBitString, const char *offBitString, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
 
 	//destructor
 	virtual ~EX_RCSwitch();

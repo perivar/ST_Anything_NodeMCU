@@ -63,9 +63,6 @@
 #include <S_TimedRelay.h>           //Implements a Sensor to control a digital output pin with timing capabilities
 #include <EX_RCSwitch.h>            //Implements the Executor (EX) as an RCSwitch object
 
-//#include <RCSwitch.h>
-//RCSwitch mySwitch = RCSwitch();
-
 //*************************************************************************************************
 //NodeMCU v1.0 ESP8266-12e Pin Definitions (makes it much easier as these match the board markings)
 //*************************************************************************************************
@@ -103,17 +100,17 @@
 //******************************************************************************************
 //ESP8266 WiFi Information
 //******************************************************************************************
-String str_ssid = WIFI_SSID;          //  <---You must edit this line!
-String str_password = WIFI_PASSWORD;  //  <---You must edit this line!
-IPAddress ip(DEVICE_IP_ADDRESS);      //Device IP Address       //  <---You must edit this line!
-IPAddress gateway(192, 168, 0, 1);    //Router gateway          //  <---You must edit this line!
-IPAddress subnet(255, 255, 255, 0);   //LAN subnet mask         //  <---You must edit this line!
-IPAddress dnsserver(192, 168, 0, 1);  //DNS server              //  <---You must edit this line!
-const unsigned int serverPort = 8090; // port to run the http server on
+String str_ssid = WIFI_SSID;                 //  <---You must edit this line!
+String str_password = WIFI_PASSWORD;         //  <---You must edit this line!
+IPAddress ip(DEVICE_IP_ADDRESS);             //Device IP Address       //  <---You must edit this line!
+IPAddress gateway(ROUTER_GATEWAY);           //Router gateway          //  <---You must edit this line!
+IPAddress subnet(LAN_SUBNET);                //LAN subnet mask         //  <---You must edit this line!
+IPAddress dnsserver(DNS_SERVER);             //DNS server              //  <---You must edit this line!
+const unsigned int serverPort = SERVER_PORT; // port to run the http server on
 
 // Smartthings Hub Information
-IPAddress hubIp(192, 168, 0, 50);   // smartthings hub ip      //  <---You must edit this line!
-const unsigned int hubPort = 39500; // smartthings hub port
+IPAddress hubIp(HUB_IP_ADDRESS);       // smartthings hub ip      //  <---You must edit this line!
+const unsigned int hubPort = HUB_PORT; // smartthings hub port
 
 //******************************************************************************************
 //st::Everything::callOnMsgSend() optional callback routine.  This is a sniffer to monitor
@@ -172,9 +169,9 @@ void setup()
   static st::EX_Alarm executor1(F("alarm1"), PIN_ALARM_1, LOW, true);
   static st::EX_Switch executor2(F("switch1"), PIN_SWITCH_1, LOW, true); //Inverted logic for "Active Low" Relay Board
 
-  // RF 433 Switch
-  //static st::EX_RCSwitch executor3(F("rcswitch1"), PIN_RCSWITCH, 5526835, 24, 5526844, 24, 174, 1, 15, LOW);
+  // Add support for RF 433 Switches:
   static st::EX_RCSwitch executor3(F("switch2"), PIN_RCSWITCH, "0000011010100110100101100110010110101010100110101010", "0000011010100110100101100110010110101010100101010101", 9, 4, LOW);
+  static st::EX_RCSwitch executor4(F("switch3"), PIN_RCSWITCH, "1001100101101010100101101010011001011001100110100110010110101010", "1001100101101010100101101010011001011001100110100110010110101010", 8, 10, LOW);
 
   //*****************************************************************************
   //  Configure debug print output from each main class
@@ -222,16 +219,12 @@ void setup()
   st::Everything::addExecutor(&executor1);
   st::Everything::addExecutor(&executor2);
   st::Everything::addExecutor(&executor3);
+  st::Everything::addExecutor(&executor4);
 
   //*****************************************************************************
   //Initialize each of the devices which were added to the Everything Class
   //*****************************************************************************
   st::Everything::initDevices();
-
-  // Transmitter on RX on nodemcu
-  //mySwitch.enableTransmit(PIN_RCSWITCH);
-  //mySwitch.setProtocol(9);
-  //mySwitch.setRepeatTransmit(4);
 }
 
 //******************************************************************************************
@@ -239,24 +232,6 @@ void setup()
 //******************************************************************************************
 void loop()
 {
-  /*
-  const char *everflourish4On = "0000011010100110100101100110010110101010100110101010";
-  Serial.print("Sending 4 ON: ");
-  Serial.print(strlen(everflourish4On));
-  Serial.print(" bits.");
-  Serial.println();
-  mySwitch.send(everflourish4On);
-
-  delay(2000);
-
-  const char *everflourish4Off = "0000011010100110100101100110010110101010100101010101";
-  Serial.print("Sending 4 OFF: ");
-  Serial.print(strlen(everflourish4Off));
-  Serial.print(" bits.");
-  Serial.println();
-  mySwitch.send(everflourish4Off);
-  */
-
   //*****************************************************************************
   //Execute the Everything run method which takes care of "Everything"
   //*****************************************************************************
