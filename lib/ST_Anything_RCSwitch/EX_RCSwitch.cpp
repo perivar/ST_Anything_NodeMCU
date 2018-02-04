@@ -43,12 +43,34 @@ void EX_RCSwitch::writeStateToPin()
 	if (m_bCurrentState)
 	{
 		//m_myRCSwitch.send(m_onCode, m_onLength);
-		m_myRCSwitch.send(m_onBitString);
+		//m_myRCSwitch.send(m_onBitString);
+
+		//char __on[sizeof(m_onBitString)];
+		//m_onBitString.toCharArray(__on, sizeof(__on));
+		//m_myRCSwitch.send(__on);
+
+		const char *everflourish4On = "0000011010100110100101100110010110101010100110101010";
+		Serial.print("Sending 4 ON: ");
+		Serial.print(strlen(everflourish4On));
+		Serial.print(" bits.");
+		Serial.println();
+		m_myRCSwitch.send(everflourish4On);
 	}
 	else
 	{
 		//m_myRCSwitch.send(m_offCode, m_offLength);
-		m_myRCSwitch.send(m_offBitString);
+		//m_myRCSwitch.send(m_offBitString);
+
+		//char __off[sizeof(m_offBitString)];
+		//m_offBitString.toCharArray(__off, sizeof(__off));
+		//m_myRCSwitch.send(__off);
+
+		const char *everflourish4Off = "0000011010100110100101100110010110101010100101010101";
+		Serial.print("Sending 4 OFF: ");
+		Serial.print(strlen(everflourish4Off));
+		Serial.print(" bits.");
+		Serial.println();
+		m_myRCSwitch.send(everflourish4Off);
 	}
 }
 
@@ -71,12 +93,19 @@ EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, u
 */
 
 // alternate constructor
-EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, char *onBitString, char *offBitString, byte protocol, byte repeatTransmits, bool startingState) : Executor(name),
-																																												 m_bCurrentState(startingState),
-																																												 m_myRCSwitch(RCSwitch()),
-																																												 m_onBitString(onBitString),
-																																												 m_offBitString(offBitString)
+EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, String onBitString, String offBitString, byte protocol, byte repeatTransmits, bool startingState) : Executor(name),
+																																												   m_bCurrentState(startingState),
+																																												   m_myRCSwitch(RCSwitch()),
+																																												   m_onBitString(onBitString),
+																																												   m_offBitString(offBitString)
 {
+	Serial.print("Transmit pin: ");
+	Serial.print(transmitterPin);
+	Serial.print(", protocol: ");
+	Serial.print(protocol);
+	Serial.print(", repeats: ");
+	Serial.println(repeatTransmits);
+
 	setPin(transmitterPin);
 	m_myRCSwitch.setProtocol(protocol);				 // set protocol (default is 1, will work for most outlets)
 	m_myRCSwitch.setRepeatTransmit(repeatTransmits); // set number of transmission repetitions.

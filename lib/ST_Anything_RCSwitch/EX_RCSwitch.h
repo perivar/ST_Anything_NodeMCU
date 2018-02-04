@@ -32,7 +32,7 @@
 #ifndef ST_EX_RCSWITCH
 #define ST_EX_RCSWITCH
 
-#include "RCSwitch.h"
+#include <RCSwitch.h>
 #include "Executor.h"
 
 namespace st
@@ -47,17 +47,16 @@ class EX_RCSwitch : public Executor
 	unsigned int m_onLength;  //RCSwitch On Length
 	unsigned long m_offCode;  //RCSwitch Off Code
 	unsigned int m_offLength; //RCSwitch Off Length
-	char *m_onBitString;
-	char *m_offBitString;
+	String m_onBitString;
+	String m_offBitString;
 
 	void writeStateToPin(); //function to update the Arduino digital output pin via RCSwitch switchOn and switchOff commands
 
   public:
 	//constructor - called in your sketch's global variable declaration section
+	EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, String onBitString, String offBitString, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
 	//EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, unsigned long onCode, unsigned int onLength, unsigned long offCode, unsigned int offLength, unsigned int pulseLength, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
-
-	// alternatve constructor
-	EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, char *onBitString, char *offBitString, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
+	//EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, char *onBitString, char *offBitString, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
 
 	//destructor
 	virtual ~EX_RCSwitch();
