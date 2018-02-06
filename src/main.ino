@@ -174,8 +174,8 @@ void setup()
   static st::EX_Switch executor2(F("switch1"), PIN_SWITCH_1, LOW, true); //Inverted logic for "Active Low" Relay Board
 
   // Add support for RF 433 Switches:
-  static st::EX_RCSwitch executor3(F("switch2"), PIN_RCSWITCH, "0000011010100110100101100110010110101010100110101010", "0000011010100110100101100110010110101010100101010101", 9, 4, LOW);
-  static st::EX_RCSwitch executor4(F("switch3"), PIN_RCSWITCH, "1001100101101010100101101010011001011001100110100110010110101010", "0", 8, 10, LOW);
+  static st::EX_RCSwitch executor3(F("switch2"), PIN_RCSWITCH, "000000010011010100000011", "000000010011010100001100", 1, 4, LOW, 189);
+  //static st::EX_RCSwitch executor4(F("switch3"), PIN_RCSWITCH, 79107, 24, 79116, 24, 189, 1, 4, LOW);
 
   //*****************************************************************************
   //  Configure debug print output from each main class
@@ -223,7 +223,7 @@ void setup()
   st::Everything::addExecutor(&executor1);
   st::Everything::addExecutor(&executor2);
   st::Everything::addExecutor(&executor3);
-  st::Everything::addExecutor(&executor4);
+  //st::Everything::addExecutor(&executor4);
 
   //*****************************************************************************
   //Initialize each of the devices which were added to the Everything Class
