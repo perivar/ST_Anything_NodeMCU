@@ -33,6 +33,7 @@
 //				- byte protocol - OPTIONAL - defaults to "1" - the protocol for RCSwitch send() command
 //				- byte repeatTransmits - OPTIONAL - defaults to "15" - the number of repeated transmits for RCSwitch send() command
 //				- bool startingState - OPTIONAL - the value desired for the initial state of the switch.  LOW = "off", HIGH = "on"
+//				- unsigned int pulseLength - OPTIONAL -  defaults to 189 - the length of the RF pulse for RCSwitch send() command
 //  Change History:
 //
 //    Date        Who            What
@@ -60,6 +61,8 @@ void EX_RCSwitch::writeStateToPin()
 		Serial.print(m_nPin);
 		Serial.print(F(" , protocol: "));
 		Serial.print(m_nProtocol);
+		Serial.print(F(" , pulse-length: "));
+		Serial.print(m_nPulseLength);
 		Serial.print(F(" , repeats: "));
 		Serial.print(m_nRepeatTransmit);
 		if (strlen(m_onBitString) > 0)
@@ -125,6 +128,7 @@ EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, u
 																																																																m_onLength(onLength),
 																																																																m_offCode(offCode),
 																																																																m_offLength(offLength),
+																																																																m_nPulseLength(pulseLength),
 																																																																m_nProtocol(protocol),
 																																																																m_nRepeatTransmit(repeatTransmits),
 																																																																m_bCurrentState(startingState)
@@ -137,17 +141,18 @@ EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, u
 
 // new constructor that supports bit strings (with the new RCSwitch library: https://github.com/perivar/rc-switch)
 EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, const char *onBitString, const char *offBitString, byte protocol, byte repeatTransmits, bool startingState, unsigned int pulseLength) : Executor(name),
-																																															 m_myRCSwitch(RCSwitch()),
-																																															 m_onBitString(onBitString),
-																																															 m_offBitString(offBitString),
-																																															 m_nProtocol(protocol),
-																																															 m_nRepeatTransmit(repeatTransmits),
-																																															 m_bCurrentState(startingState),
-																																															 m_nPulseLength(pulseLength)
+																																																					   m_myRCSwitch(RCSwitch()),
+																																																					   m_onBitString(onBitString),
+																																																					   m_offBitString(offBitString),
+																																																					   m_nProtocol(protocol),
+																																																					   m_nRepeatTransmit(repeatTransmits),
+																																																					   m_bCurrentState(startingState),
+																																																					   m_nPulseLength(pulseLength)
 {
 	setPin(transmitterPin);
-	m_myRCSwitch.setProtocol(protocol, pulseLength);				 // set protocol (default is 1, will work for most outlets)
+	m_myRCSwitch.setProtocol(protocol);				 // set protocol (default is 1, will work for most outlets)
 	m_myRCSwitch.setRepeatTransmit(repeatTransmits); // set number of transmission repetitions.
+	m_myRCSwitch.setPulseLength(pulseLength);		 // Set pulse length.
 }
 
 //destructor

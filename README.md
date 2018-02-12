@@ -1,12 +1,14 @@
-# ST_Anything_NodeMCU
-ST_Anything on NodeMCU
+# ST_Anything on NodeMCU with RF433 Support
 
-Forked from https://github.com/DanielOgorchock/ST_Anything/blob/master/README.md 
-Added widre support for RF433 devices using the new rc-switch fork: https://github.com/perivar/rc-switch
+Forked from ST_Anything and made PlatformIO compatible: <https://github.com/DanielOgorchock/ST_Anything>
+
+Please read the original README for details on ST_Anything <https://github.com/DanielOgorchock/ST_Anything/blob/master/README.md>
+
+Added wider support for RF433 devices using the new rc-switch fork: https://github.com/perivar/rc-switch
 
 Note
 ====
-This project requires a secrets.h file you have to add:
+This project requires a secrets.h file you have to add yourself:
 ```
 #define WIFI_SSID "ADD YOUR OWN HERE"
 #define WIFI_PASSWORD "ADD PASSWORD HERE"

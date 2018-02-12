@@ -33,6 +33,7 @@
 //				- byte protocol - OPTIONAL - defaults to "1" - the protocol for RCSwitch send() command
 //				- byte repeatTransmits - OPTIONAL - defaults to "15" - the number of repeated transmits for RCSwitch send() command
 //				- bool startingState - OPTIONAL - the value desired for the initial state of the switch.  LOW = "off", HIGH = "on"
+//				- unsigned int pulseLength - OPTIONAL -  defaults to 189 - the length of the RF pulse for RCSwitch send() command
 //  Change History:
 //
 //    Date        Who            What
@@ -54,18 +55,18 @@ namespace st
 class EX_RCSwitch : public Executor
 {
   private:
-	bool m_bCurrentState;		//HIGH or LOW
-	byte m_nPin;				//Arduino Pin used as a RC Transmitter
-	RCSwitch m_myRCSwitch;		//RCSwitch Object
-	int m_nProtocol;			//RCSwitch Protocol Number
-	int m_nRepeatTransmit;		//RCSwitch Number of Repeats when sending a signal
-	const char *m_onBitString;  //RCSwitch On Bit String
-	const char *m_offBitString; //RCSwitch Off Bit String
-	unsigned long m_onCode;		//RCSwitch On Code (if not using bit string)
-	unsigned int m_onLength;	//RCSwitch On Length (if not using bit string)
-	unsigned long m_offCode;	//RCSwitch Off Code (if not using bit string)
-	unsigned int m_offLength;   //RCSwitch Off Length (if not using bit string)
-	unsigned int m_nPulseLength;   //RCSwitch Pulse Length 
+	bool m_bCurrentState;		 //HIGH or LOW
+	byte m_nPin;				 //Arduino Pin used as a RC Transmitter
+	RCSwitch m_myRCSwitch;		 //RCSwitch Object
+	int m_nProtocol;			 //RCSwitch Protocol Number
+	int m_nRepeatTransmit;		 //RCSwitch Number of Repeats when sending a signal
+	const char *m_onBitString;   //RCSwitch On Bit String
+	const char *m_offBitString;  //RCSwitch Off Bit String
+	unsigned long m_onCode;		 //RCSwitch On Code (if not using bit string)
+	unsigned int m_onLength;	 //RCSwitch On Length (if not using bit string)
+	unsigned long m_offCode;	 //RCSwitch Off Code (if not using bit string)
+	unsigned int m_offLength;	//RCSwitch Off Length (if not using bit string)
+	unsigned int m_nPulseLength; //RCSwitch Pulse Length
 
 	void writeStateToPin(); //function to update the Arduino digital output pin via RCSwitch switchOn and switchOff commands
 
@@ -73,9 +74,7 @@ class EX_RCSwitch : public Executor
 	//constructor - called in your sketch's global variable declaration section
 	EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, unsigned long onCode, unsigned int onLength, unsigned long offCode, unsigned int offLength, unsigned int pulseLength, byte protocol = 1, byte repeatTransmits = 4, bool startingState = LOW);
 	// new constructor that supports bit strings (with the new RCSwitch library: https://github.com/perivar/rc-switch)
-	//EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, const char *onBitString, const char *offBitString, byte protocol = 1, byte repeatTransmits = 4, bool startingState = LOW);
-  // modified new constructor that allows specification of pulseLength
-  EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, const char *onBitString, const char *offBitString, byte protocol = 1, byte repeatTransmits = 4, bool startingState = LOW, unsigned int pulseLength = 189);
+	EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, const char *onBitString, const char *offBitString, byte protocol = 1, byte repeatTransmits = 4, bool startingState = LOW, unsigned int pulseLength = 189);
 
 	//destructor
 	virtual ~EX_RCSwitch();
