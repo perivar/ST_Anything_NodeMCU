@@ -65,14 +65,17 @@ class EX_RCSwitch : public Executor
 	unsigned int m_onLength;	//RCSwitch On Length (if not using bit string)
 	unsigned long m_offCode;	//RCSwitch Off Code (if not using bit string)
 	unsigned int m_offLength;   //RCSwitch Off Length (if not using bit string)
+	unsigned int m_nPulseLength;   //RCSwitch Pulse Length 
 
 	void writeStateToPin(); //function to update the Arduino digital output pin via RCSwitch switchOn and switchOff commands
 
   public:
 	//constructor - called in your sketch's global variable declaration section
-	EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, unsigned long onCode, unsigned int onLength, unsigned long offCode, unsigned int offLength, unsigned int pulseLength, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
+	EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, unsigned long onCode, unsigned int onLength, unsigned long offCode, unsigned int offLength, unsigned int pulseLength, byte protocol = 1, byte repeatTransmits = 4, bool startingState = LOW);
 	// new constructor that supports bit strings (with the new RCSwitch library: https://github.com/perivar/rc-switch)
-	EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, const char *onBitString, const char *offBitString, byte protocol = 1, byte repeatTransmits = 15, bool startingState = LOW);
+	//EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, const char *onBitString, const char *offBitString, byte protocol = 1, byte repeatTransmits = 4, bool startingState = LOW);
+  // modified new constructor that allows specification of pulseLength
+  EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, const char *onBitString, const char *offBitString, byte protocol = 1, byte repeatTransmits = 4, bool startingState = LOW, unsigned int pulseLength = 189);
 
 	//destructor
 	virtual ~EX_RCSwitch();

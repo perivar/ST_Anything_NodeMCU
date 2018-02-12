@@ -136,16 +136,17 @@ EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, u
 }
 
 // new constructor that supports bit strings (with the new RCSwitch library: https://github.com/perivar/rc-switch)
-EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, const char *onBitString, const char *offBitString, byte protocol, byte repeatTransmits, bool startingState) : Executor(name),
+EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, const char *onBitString, const char *offBitString, byte protocol, byte repeatTransmits, bool startingState, unsigned int pulseLength) : Executor(name),
 																																															 m_myRCSwitch(RCSwitch()),
 																																															 m_onBitString(onBitString),
 																																															 m_offBitString(offBitString),
 																																															 m_nProtocol(protocol),
 																																															 m_nRepeatTransmit(repeatTransmits),
-																																															 m_bCurrentState(startingState)
+																																															 m_bCurrentState(startingState),
+																																															 m_nPulseLength(pulseLength)
 {
 	setPin(transmitterPin);
-	m_myRCSwitch.setProtocol(protocol);				 // set protocol (default is 1, will work for most outlets)
+	m_myRCSwitch.setProtocol(protocol, pulseLength);				 // set protocol (default is 1, will work for most outlets)
 	m_myRCSwitch.setRepeatTransmit(repeatTransmits); // set number of transmission repetitions.
 }
 
