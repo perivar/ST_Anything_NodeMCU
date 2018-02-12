@@ -1,4 +1,8 @@
+### GET NOT Working
+GET http://192.168.100.200:8090/switch3 on?
 
-GET http://192.168.100.200:8090/switch2 on? HTTP/1.1
 
-##
+### POST NOT Working
+POST http://192.168.100.200:8090/switch3+on? HTTP/1.1
+
+/switch3 on?

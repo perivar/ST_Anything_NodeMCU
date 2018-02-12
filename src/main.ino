@@ -176,7 +176,7 @@ void setup()
   // Add support for RF 433 Switches:
   // Examples where Pulse Length is required
   //static st::EX_RCSwitch executor3(F("switch2"), PIN_RCSWITCH, "000000010011010100000011", "000000010011010100001100", 1, 4, LOW, 189);
-  //static st::EX_RCSwitch executor4(F("switch3"), PIN_RCSWITCH, 79107, 24, 79116, 24, 189, 1, 4, LOW);
+  //static st::EX_RCSwitch executor4(F("switch3"), PIN_RCSWITCH, 79107, 24, 79116, 24, 1, 4, LOW, 189);
 
   // Examples where Pulse Length is not required
   static st::EX_RCSwitch executor3(F("switch2"), PIN_RCSWITCH, "0000011010100110100101100110010110101010100110101010", "0000011010100110100101100110010110101010100101010101", 9, 4, LOW);
