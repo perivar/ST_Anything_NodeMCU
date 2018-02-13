@@ -214,7 +214,6 @@ void setup()
   //*****************************************************************************
   //Add each sensor to the "Everything" Class
   //*****************************************************************************
-  /*
   st::Everything::addSensor(&sensor1);
   st::Everything::addSensor(&sensor2);
   st::Everything::addSensor(&sensor3);
@@ -223,7 +222,6 @@ void setup()
   st::Everything::addSensor(&sensor6);
   st::Everything::addSensor(&sensor7);
   st::Everything::addSensor(&sensor8);
-*/
 
   //*****************************************************************************
   //Add each executor to the "Everything" Class

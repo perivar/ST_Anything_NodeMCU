@@ -1,3 +1,6 @@
+@commandon = switch3 on
+@commandoff = switch3 off
+
 ### GET Working ON
 GET http://192.168.100.200:8090/switch2 on?
 
@@ -6,9 +9,7 @@ GET http://192.168.100.200:8090/switch2 off?
 
 
 ### POST Working ON
-@commandon = switch3 on
 POST http://192.168.100.200:8090/{{commandon}}?
 
 ### POST Working OFF
-@commandoff = switch3 off
 POST http://192.168.100.200:8090/{{commandoff}}?
