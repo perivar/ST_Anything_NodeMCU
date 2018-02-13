@@ -174,13 +174,13 @@ void setup()
   static st::EX_Switch executor2(F("switch1"), PIN_SWITCH_1, LOW, true); //Inverted logic for "Active Low" Relay Board
 
   // Add support for RF 433 Switches:
-  // Examples where Pulse Length is required
+  // Examples where Pulse Length is used
   //static st::EX_RCSwitch executor3(F("switch2"), PIN_RCSWITCH, "000000010011010100000011", "000000010011010100001100", 1, 4, LOW, 189);
   //static st::EX_RCSwitch executor4(F("switch3"), PIN_RCSWITCH, 79107, 24, 79116, 24, 1, 4, LOW, 189);
 
-  // Examples where Pulse Length is not required
-  static st::EX_RCSwitch executor3(F("switch2"), PIN_RCSWITCH, "0000011010100110100101100110010110101010100110101010", "0000011010100110100101100110010110101010100101010101", 9, 4, LOW);
-  static st::EX_RCSwitch executor4(F("switch3"), PIN_RCSWITCH, "1001100101101010100101101010011001011001100110100110010110101010", "0", 8, 10, LOW);
+  // Examples where Pulse Length is not used
+  static st::EX_RCSwitch executor3(F("switch2"), PIN_RCSWITCH, "0000011010100110100101100110010110101010100110101010", "0000011010100110100101100110010110101010100101010101", 9, 4);
+  static st::EX_RCSwitch executor4(F("switch3"), PIN_RCSWITCH, "1001100101101010100101101010011001011001100110100110010110101010", "0", 8, 10);
 
   //*****************************************************************************
   //  Configure debug print output from each main class
@@ -214,6 +214,7 @@ void setup()
   //*****************************************************************************
   //Add each sensor to the "Everything" Class
   //*****************************************************************************
+  /*
   st::Everything::addSensor(&sensor1);
   st::Everything::addSensor(&sensor2);
   st::Everything::addSensor(&sensor3);
@@ -222,6 +223,7 @@ void setup()
   st::Everything::addSensor(&sensor6);
   st::Everything::addSensor(&sensor7);
   st::Everything::addSensor(&sensor8);
+*/
 
   //*****************************************************************************
   //Add each executor to the "Everything" Class

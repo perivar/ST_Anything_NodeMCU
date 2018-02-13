@@ -14,7 +14,6 @@
 //                static st::EX_RCSwitch executor3(F("switch4"), PIN_RCSWITCH, "000000010011010100000011", "000000010011010100001100", 1, 4, LOW, 189);
 //
 //			  st::EX_RCSwitch() have four constructors.
-//			  Note! That when pulse-length is not included, the protocol default pulse-length is used instead (which works for many protocols, but not all)
 //			  The first requires the following arguments:
 //				- String &name - REQUIRED - the name of the object - must match the Groovy ST_Anything DeviceType tile name  (e.g. switch3)
 //				- byte transmitterPin - REQUIRED - the Arduino Pin to be used as a digital output for the RCSwitch object's transmitter pin
@@ -24,8 +23,8 @@
 //				- unsigned int offLength - REQUIRED - the "off" code's length for RCSwitch send() command
 //				- byte protocol - OPTIONAL - defaults to "1" - the protocol for RCSwitch send() command
 //				- byte repeatTransmits - OPTIONAL - defaults to "4" - the number of repeated transmits for RCSwitch send() command
-//				- bool startingState - OPTIONAL - the value desired for the initial state of the switch.  LOW = "off", HIGH = "on"
-//				- unsigned int pulseLength - OPTIONAL -  defaults to 189 - the length of the RF pulse for RCSwitch send() command
+//				- bool startingState - OPTIONAL - defaults to "LOW = off" - the value desired for the initial state of the switch.  LOW = "off", HIGH = "on"
+//				- unsigned int pulseLength - OPTIONAL -  defaults to 0 (which means use the defined protocol's own pulse-length) - the length of the RF pulse for RCSwitch send() command
 //
 //			  The second supports Bit Strings (and therefore more devices) and requires the following arguments:
 //              Requires the new RCSwitch library: https://github.com/perivar/rc-switch
@@ -35,8 +34,8 @@
 //				- const char *offBitString - REQUIRED - the "off" bitstring for RCSwitch send() command
 //				- byte protocol - OPTIONAL - defaults to "1" - the protocol for RCSwitch send() command
 //				- byte repeatTransmits - OPTIONAL - defaults to "4" - the number of repeated transmits for RCSwitch send() command
-//				- bool startingState - OPTIONAL - the value desired for the initial state of the switch.  LOW = "off", HIGH = "on"
-//				- unsigned int pulseLength - OPTIONAL -  defaults to 189 - the length of the RF pulse for RCSwitch send() command
+//				- bool startingState - OPTIONAL - defaults to "LOW = off" - the value desired for the initial state of the switch.  LOW = "off", HIGH = "on"
+//				- unsigned int pulseLength - OPTIONAL -  defaults to 0 (which means use the defined protocol's own pulse-length) - the length of the RF pulse for RCSwitch send() command
 //  Change History:
 //
 //    Date        Who            What
@@ -45,7 +44,7 @@
 //    2015-05-20  Dan Ogorchock  Improved to work with Etekcity ZAP 3F 433Mhz RF Outlets
 //    2018-08-30  Dan Ogorchock  Modified comment section above to comply with new Parent/Child Device Handler requirements
 //	  2018-02-04  P.I. Nerseth	 Changed it to work with Bit Strings and a new RCSwitch library (and thus support more devices)
-//	  2018-02-12  P.I. Nerseth	 Changed it to work with Bit Strings and optional Pulse Length (based on input from lehighkid)
+//	  2018-02-13  P.I. Nerseth	 Changed it to work with Bit Strings and optional Pulse Length (based on input from lehighkid)
 //
 //******************************************************************************************
 #include "EX_RCSwitch.h"
@@ -65,7 +64,14 @@ void EX_RCSwitch::writeStateToPin()
 		Serial.print(F(", protocol: "));
 		Serial.print(m_nProtocol);
 		Serial.print(F(", pulse-length: "));
-		Serial.print(m_nPulseLength);
+		if (m_nPulseLength > 0)
+		{
+			Serial.print(m_nPulseLength);
+		}
+		else
+		{
+			Serial.print(F("using protocol pulse-length"));
+		}
 		Serial.print(F(", repeats: "));
 		Serial.print(m_nRepeatTransmit);
 		if (strlen(m_onBitString) > 0)
@@ -95,7 +101,7 @@ void EX_RCSwitch::writeStateToPin()
 		Serial.println();
 	}
 
-	// Note! For some reason I have always enable transmit for this to work!
+	// Note! For some reason I have to always enable transmit for this to work!
 	m_myRCSwitch.enableTransmit(m_nPin);
 
 	if (m_bCurrentState)
@@ -139,7 +145,10 @@ EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, u
 	setPin(transmitterPin);
 	m_myRCSwitch.setProtocol(protocol);				 // set protocol (default is 1, will work for most outlets)
 	m_myRCSwitch.setRepeatTransmit(repeatTransmits); // set number of transmission repetitions.
-	m_myRCSwitch.setPulseLength(pulseLength);		 // Set pulse length.
+	if (pulseLength > 0)
+	{
+		m_myRCSwitch.setPulseLength(pulseLength); // Set pulse length.
+	}
 }
 
 // new constructor that supports bit strings (with the new RCSwitch library: https://github.com/perivar/rc-switch)
@@ -155,7 +164,10 @@ EX_RCSwitch::EX_RCSwitch(const __FlashStringHelper *name, byte transmitterPin, c
 	setPin(transmitterPin);
 	m_myRCSwitch.setProtocol(protocol);				 // set protocol (default is 1, will work for most outlets)
 	m_myRCSwitch.setRepeatTransmit(repeatTransmits); // set number of transmission repetitions.
-	m_myRCSwitch.setPulseLength(pulseLength);		 // Set pulse length.
+	if (pulseLength > 0)
+	{
+		m_myRCSwitch.setPulseLength(pulseLength); // Set pulse length.
+	}
 }
 
 //destructor

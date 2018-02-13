@@ -1,8 +1,14 @@
-### GET NOT Working
-GET http://192.168.100.200:8090/switch3 on?
+### GET Working ON
+GET http://192.168.100.200:8090/switch2 on?
+
+### GET Working OFF
+GET http://192.168.100.200:8090/switch2 off?
 
 
-### POST NOT Working
-POST http://192.168.100.200:8090/switch3+on? HTTP/1.1
+### POST Working ON
+@commandon = switch3 on
+POST http://192.168.100.200:8090/{{commandon}}?
 
-/switch3 on?
+### POST Working OFF
+@commandoff = switch3 off
+POST http://192.168.100.200:8090/{{commandoff}}?
