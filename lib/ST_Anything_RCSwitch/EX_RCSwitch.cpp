@@ -10,7 +10,7 @@
 //                static st::EX_RCSwitch executor1(F("switch1"), PIN_RCSWITCH, 35754004, 26, 18976788, 26, 1, 15, LOW);
 //                static st::EX_RCSwitch executor4(F("switch2"), PIN_RCSWITCH, 79107, 24, 79116, 24, 1, 4, LOW, 189);
 //            or
-//			      static st::EX_RCSwitch executor3(F("switch3"), PIN_RCSWITCH, "0000011010100110100101100110010110101010100110101010", "0000011010100110100101100110010110101010100101010101", 9, 4, LOW);
+//			      static st::EX_RCSwitch executor3(F("switch3"), PIN_RCSWITCH, "0000011010100110100101100110010110101010100110101010", "0000011010100110100101100110010110101010100101010101", 9, 4);
 //                static st::EX_RCSwitch executor3(F("switch4"), PIN_RCSWITCH, "000000010011010100000011", "000000010011010100001100", 1, 4, LOW, 189);
 //
 //			  st::EX_RCSwitch() have four constructors.
